@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.itcast.ssm.mapper.TaskMapperTask">
+   <!-- <sql id="query_Task_byId">
+        <if test="_parameter!=null">
+            task.taskid = '${_parameter}'
+        </if>
+    </sql>
+    <sql id="query_Task_byQueryPo">
+        <where>
+        <if test="_parameter.taskname!=null and _parameter.taskname!=''" >
+            task.taskname = '${_parameter.taskname}'
+        </if>
+         <if test="_parameter.role!=null and (_parameter.taskname!=null or _parameter.taskname!='')">
+         and task.role = '${_parameter.role}'
+        </if>
+        </where>
+    </sql> -->
+    <select id="findTask" resultType="cn.itcast.ssm.po.TaskExtend">
+        SELECT task.* FROM task
+    </select>
+    <select id="findTaskByTaskId" parameterType="java.lang.Integer" resultType="cn.itcast.ssm.po.TaskExtend">
+        SELECT task.* FROM task
+     <!--       <include refid="query_Task_byId"></include>  -->
+    </select>
+    <!-- public TaskExtend findTaskByQueryPo(TaskQueryPo taskQueryPo); -->
+    <select id="findTaskByQueryPo" parameterType="cn.itcast.ssm.po.TaskQueryPo" resultType="cn.itcast.ssm.po.TaskExtend">
+        SELECT task.* FROM task
+	<!--	<include refid="query_Task_byQueryPo"></include> -->
+	 	LIMIT #{index},#{rows}
+    </select>
+    <!-- findAllTaskByQueryPo(TaskQueryPo taskQueryPo) -->
+        <select id="findAllTaskByQueryPo" parameterType="cn.itcast.ssm.po.TaskQueryPo" resultType="cn.itcast.ssm.po.TaskExtend">
+        SELECT task.* FROM task
+	<!--	<include refid="query_Task_byQueryPo"></include> -->
+    </select>
+    <!-- updateTask(TaskExtend taskExtend) -->
+    
+    <update id="updateTask" parameterType="cn.itcast.ssm.po.TaskExtend">
+        update task
+        set taskName = #{taskName,jdbcType=VARCHAR},
+        password = #{password,jdbcType=VARCHAR},
+        role = #{role,jdbcType=INTEGER}
+        where taskId = #{taskId,jdbcType=INTEGER}
+    </update>
+    
+    <!-- deleteTask(Integer taskId); -->
+    <delete id="deleteTask" parameterType="java.lang.Integer">
+        delete from task
+        where taskId = #{taskId,jdbcType=INTEGER}
+    </delete>
+    <!-- deleteBatchTasks(String ids) -->
+    <delete id="deleteBatchTasks" parameterType="java.util.List">
+    DELETE FROM task WHERE taskId IN  
+    <foreach collection="array" index="index" item="item" open="(" separator="," close=")">   
+        #{item}   
+    </foreach>
+    </delete>
+    <!-- addTask(TaskExtend taskExtend); -->
+    <insert id="addTask" parameterType="cn.itcast.ssm.po.TaskExtend">
+        insert into task (taskName, password,
+        role)
+        values (#{taskName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+        #{role,jdbcType=INTEGER})
+    </insert>
+</mapper>

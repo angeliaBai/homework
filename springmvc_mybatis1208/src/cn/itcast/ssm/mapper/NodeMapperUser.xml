@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.itcast.ssm.mapper.NodeMapperUser" >
+
+   <!-- 定义节点查询的sql片段，就是节点查询条件 -->
+   <!-- <sql id="query_node_where">
+   	使用动态sql，通过if判断，满足条件进行sql拼接
+   	节点查询条件通过ItemsQueryVo包装对象 中itemsCustom属性传递
+   		<if test="nodeExtend!=null">
+   			<if test="nodeExtend.userid!=null and nodeExtend.userid!=''">
+   				user.userid = '${nodeExtend.userid}'
+   			</if>
+   		</if>
+	
+   </sql>
+  	
+  	节点列表查询
+  	parameterType传入包装对象(包装了查询条件)
+  		resultType建议使用扩展对象
+  	
+  	<select id="findNodeInfo" parameterType="cn.itcast.ssm.po.NodeQueryVo"
+  		 resultType="cn.itcast.ssm.po.nodeextend">
+  		SELECT node.* FROM node
+  		<where>
+  			<include refid="query_node_where"></include>
+  		</where>
+  	</select> -->
+  	
+   <!--  <sql id="query_Node_byQueryPo">
+        <where>
+         <if test="_parameter.nodeip!=null )">
+         and node.nodeip = '${_parameter.nodeip}'
+        </if>
+        </where>
+    </sql>-->
+    
+  	<select id="findNode" resultType="cn.itcast.ssm.po.NodeExtend">
+  		SELECT node.* FROM node
+  	</select>
+  	
+  <!-- <select id="findNodeByUserId" parameterType="java.lang.Integer" resultType="cn.itcast.ssm.po.NodeExtend">
+        SELECT node.* FROM node, user, task
+            WHERE node.taskid = task.taskid 
+            and user.userid = task.userid and user.userid = '${_parameter.userid}'
+    </select> -->	
+    
+    <select id="findNodeByUserId" parameterType="java.lang.Integer" resultType="cn.itcast.ssm.po.NodeExtend">
+        SELECT node.* FROM node
+    </select>
+    <select id="findNodeByQueryPo" parameterType="cn.itcast.ssm.po.NodeQueryPo" resultType="cn.itcast.ssm.po.NodeExtend">
+        SELECT node.* FROM node
+	 	LIMIT #{index},#{rows}
+    </select>
+    
+    <!-- findAllNodeByQueryPo(NodeQueryPo nodeQueryPo) -->
+        <select id="findAllNodeByQueryPo" parameterType="cn.itcast.ssm.po.NodeQueryPo" resultType="cn.itcast.ssm.po.NodeExtend">
+        SELECT node.* FROM node
+	<!--  	<include refid="query_Node_byQueryPo"></include> -->
+    </select>
+    
+  	 <update id="updateNode" parameterType="cn.itcast.ssm.po.NodeExtend">
+        update node
+        set nodeIp = #{nodeIp,jdbcType=VARCHAR},
+        taskId = #{taskId,jdbcType=INTEGER},
+        cpuRate = #{cpuRate,jdbcType=DOUBLE},
+        memoryRate = #{memoryRate,jdbcType=DOUBLE}
+        where nodeId = #{nodeId,jdbcType=INTEGER}
+    </update>
+    
+    <delete id="deleteNode" parameterType="java.lang.Integer">
+        delete from node
+        where nodeId = #{nodeId,jdbcType=INTEGER}
+    </delete>
+    
+     <delete id="deleteBatchNodes" parameterType="java.util.List">
+    	DELETE FROM node WHERE nodeId IN  
+    	<foreach collection="array" index="index" item="item" open="(" separator="," close=")">   
+       		 #{item}   
+    	</foreach>
+    </delete>
+    
+    <!-- addNode(NodeExtend nodeExtend); -->
+    <insert id="addNode" parameterType="cn.itcast.ssm.po.NodeExtend">
+        insert into node (nodeIp,
+        cpuRate, memoryRate)
+        values (#{nodeIp,jdbcType=VARCHAR}, #{cpuRate,jdbcType=DOUBLE},
+        #{memoryRate,jdbcType=DOUBLE})
+    </insert>
+</mapper>

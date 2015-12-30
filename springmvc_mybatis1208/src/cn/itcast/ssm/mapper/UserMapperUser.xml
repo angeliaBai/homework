@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.itcast.ssm.mapper.UserMapperUser">
+    <sql id="query_User_byId">
+        <if test="_parameter!=null">
+            user.userid = '${_parameter}'
+        </if>
+    </sql>
+    <sql id="query_User_byQueryPo">
+        <where>
+        <if test="_parameter.username!=null and _parameter.username!=''" >
+            user.username = '${_parameter.username}'
+        </if>
+         <if test="_parameter.role!=null and (_parameter.username!=null or _parameter.username!='')">
+         and user.role = '${_parameter.role}'
+        </if>
+        </where>
+    </sql>
+    <select id="findUser" resultType="cn.itcast.ssm.po.UserExtend">
+        SELECT user.* FROM user
+    </select>
+    <select id="findUserByUserId" parameterType="java.lang.Integer" resultType="cn.itcast.ssm.po.UserExtend">
+        SELECT user.* FROM user
+            <include refid="query_User_byId"></include>
+    </select>
+    <!-- public UserExtend findUserByQueryPo(UserQueryPo userQueryPo); -->
+    <select id="findUserByQueryPo" parameterType="cn.itcast.ssm.po.UserQueryPo" resultType="cn.itcast.ssm.po.UserExtend">
+        SELECT user.* FROM user
+		<include refid="query_User_byQueryPo"></include>
+	 	LIMIT #{index},#{rows}
+    </select>
+    <!-- findAllUserByQueryPo(UserQueryPo userQueryPo) -->
+        <select id="findAllUserByQueryPo" parameterType="cn.itcast.ssm.po.UserQueryPo" resultType="cn.itcast.ssm.po.UserExtend">
+        SELECT user.* FROM user
+		<include refid="query_User_byQueryPo"></include>
+    </select>
+    
+    <select id="verifyLogin" parameterType="cn.itcast.ssm.po.UserExtend" resultType="java.lang.Integer">
+        SELECT count(*) FROM user
+        WHERE user.username=#{username} and user.password=#{password}
+    </select>
+     <select id="ifUserExist" parameterType="cn.itcast.ssm.po.UserExtend" resultType="java.lang.Integer">
+        SELECT count(*) FROM user
+        WHERE user.username=#{username} 
+    </select>
+    
+    <!-- updateUser(UserExtend userExtend) -->
+    
+    <update id="updateUser" parameterType="cn.itcast.ssm.po.UserExtend">
+        update user
+        set userName = #{username,jdbcType=VARCHAR},
+        password = #{password,jdbcType=VARCHAR},
+        role = #{role,jdbcType=INTEGER}
+        where userid = #{userid,jdbcType=INTEGER}
+    </update>
+    
+    <!-- deleteUser(Integer userid); -->
+    <delete id="deleteUser" parameterType="java.lang.Integer">
+        delete from user
+        where userId = #{userid,jdbcType=INTEGER}
+    </delete>
+    <!-- deleteBatchUsers(String ids) -->
+    <delete id="deleteBatchUsers" parameterType="java.util.List">
+    DELETE FROM user WHERE userid IN  
+    <foreach collection="array" index="index" item="item" open="(" separator="," close=")">   
+        #{item}   
+    </foreach>
+    </delete>
+    <!-- addUser(UserExtend userExtend); -->
+    <insert id="addUser" parameterType="cn.itcast.ssm.po.UserExtend">
+        insert into user (userName, password,
+        role)
+        values (#{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},1)
+    </insert>
+</mapper>
