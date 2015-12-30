@@ -56,20 +56,23 @@
 			<h3>亲爱的<%=username %>，欢迎您！</h3>
 			<br/><br/>
         <div class="col-md-6">
-             <button type="submit" class="btn btn-primary btn-lg pull-right">查看/修改个人信息</button>    
+             <button id="btn0" type="button" class="btn btn-primary btn-lg pull-left">
+             	&nbsp;查看/修改个人信息&nbsp;&nbsp;
+             </button>    
         </div>
         <div class="col-md-6 "> 
-        	<button type="button" class="btn btn-primary btn-lg pull-right" onclick="window.location.href='${pageContext.request.contextPath}/Support.jsp?'">查看所有用户信息</button>
-        
+        	<button id="btn1" type="button" class="btn btn-primary btn-lg pull-right" onclick="window.location.href='${pageContext.request.contextPath}/user/user.jsp?username=<%=username%>'">
+        		&nbsp;&nbsp;查看所有用户信息&nbsp;
+        	</button>        
         </div>
        	<div class="col-md-6"> 
   			<button id="btn2" class="btn btn-primary btn-lg  pull-left"  type="button"">
-   				&nbsp; &nbsp; &nbsp;&nbsp;查看所有任务信息 &nbsp; &nbsp; &nbsp; &nbsp;
+   				&nbsp; 查看所有任务信息 &nbsp; 
   			</button>
  		</div>
- 		<div class="col-md-10"> 
+ 		<div class="col-md-6"> 
   			<button id="btn3"class="btn btn-primary btn-lg  pull-right" type="button">
-   			&nbsp; &nbsp; &nbsp;&nbsp;查看所有节点信息 &nbsp; &nbsp; &nbsp; &nbsp;
+   			&nbsp;查看所有节点信息 &nbsp; 
   			</button>
  		</div>
  		</div>
