@@ -18,8 +18,8 @@ function loginUser() {
 			});
 }
 function loginManager() {
-	var username = $('#Inputuser_name').val();
-	var password = $('#Input_pwd').val();
+	var username = $('#InputManager_name').val();
+	var password = $('#InputManager_pwd').val();
 	$.ajax({
 				type : 'POST',
 				url : '/springmvc_mybatis1208/user/verifyUser.action',

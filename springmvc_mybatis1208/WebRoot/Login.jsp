@@ -72,12 +72,12 @@ function test(){
 		<div class="form-group ">
 			<h3>管理员登录</h3>
 			<br/>
-			<label style=";" for="Inputuser_name">管理员名</label>
-			<input type="text" class="form-control" id="Inputuser_name" placeholder="请输入您的用户名">
+			<label style=";" for="InputManager_name">管理员名</label>
+			<input type="text" class="form-control" id="InputManager_name" placeholder="请输入您的用户名">
 		</div>
 		<div class="form-group">
 			<label for="Input_pwd">密 &nbsp;码</label>
-			<input type="password" class="form-control" id="Input_pwd" placeholder="请输入您的密码">
+			<input type="password" class="form-control" id="InputManager_pwd" placeholder="请输入您的密码">
 		</div>
 		<div class="form-group">
 			<label>
